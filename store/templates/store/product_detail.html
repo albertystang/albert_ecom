@@ -25,11 +25,11 @@
 					</ul>
 				</aside>
 				<main class="col-md-6 border-left">
-					<form action="" method="POST">
+					<form action="{% url 'cart_add' product.id %}" method="POST">
                         {% csrf_token %}
 						<article class="content-body">
 							<h2 class="title">{{ product.product_name }}</h2>
-							<div class="rating-star">
+							{% comment %} <div class="rating-star">
 								<span>
 									<i class="fa fa-star{% if single_product.averageReview < 0.5 %}-o{% elif single_product.averageReview >= 0.5 and single_product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
 									<i class="fa fa-star{% if single_product.averageReview < 1.5 %}-o{% elif single_product.averageReview >= 1.5 and single_product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
@@ -38,7 +38,7 @@
 									<i class="fa fa-star{% if single_product.averageReview < 4.5 %}-o{% elif single_product.averageReview >= 4.5 and single_product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
 	                                <span>{{ product.countReview }} reviews</span>
                                 </span>
-							</div>
+							</div> {% endcomment %}
 							<div class="mb-3">
 								<var class="price h4">$ {{ product.price }}</var>
 							</div>
@@ -48,9 +48,10 @@
 								<div class="item-option-select">
 									<h6>Choose Color</h6>
 									<select name="color" class="form-control" required>
-										<option value="" disabled selected>Select</option>
+                                        <option value="" disabled selected></option>
+										<option value="{{ i.variation_value | lower }}" disabled selected>Select</option>
 										{% for i in product.variation_set.colors %}
-										<option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+										    <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>										    
 										{% endfor %}
 									</select>
 								</div>
@@ -60,17 +61,28 @@
 									<h6>Select Size</h6>
 									<select name="size" class="form-control" required>
 										<option value="" disabled selected>Select</option>
-										{% for i in product.variation_set.sizes %}
-										<option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
-										{% endfor %}
+                                        {% for i in product.variation_set.sizes %}
+                                            <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+                                        {% endfor %}
 									</select>
 								</div>
 							</div>
 							<hr>
 							{% if product.stock <= 0 %}
 							    <h5 class="text-danger">Out of Stock</h5>
-							{% else %}
-							    <button type="submit" class="btn  btn-primary"> <span class="text">Add to Cart</span><i class="fa fa-shopping-cart"></i></button>
+                            {% else %}
+                                {% comment %} {% if in_cart%} {% endcomment %}
+                                    {% comment %} <a href="" class="btn btn-success">
+                                        <span class="text">Already added to Cart</span><i class="fa fa-check"></i>
+                                    </a> {% endcomment %}
+                                    <a href="{% url 'cart' %}" class="btn btn-outline-primary">
+                                        <span class="text">View Cart</span><i class="fa fa-eye"></i>
+                                    </a>
+                                {% comment %} {% else %} {% endcomment %}
+                                    <button type="submit" class="btn btn-primary">
+                                        <span class="text">Add to Cart</span><i class="fa fa-shopping-cart"></i>
+                                    </button>
+                                {% comment %} {% endif %} {% endcomment %}
 							{% endif %}
 						</article> <!-- product-info-aside .// -->
 					</form>
@@ -167,7 +179,7 @@
                     </article>
                 {% endfor %}
 			</div> <!-- col.// -->
-		</div> <!-- row.// -->
+		</div> <!-- row.// --> 
 	</div> <!-- container .//  -->
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->

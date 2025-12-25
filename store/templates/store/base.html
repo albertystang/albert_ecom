@@ -52,7 +52,15 @@ $(document).ready(function() {
 
   <!-- navbar -->
   {% include 'store/includes/navbar.html' %}
-
+  <div class="container mt-2">
+    {% if messages %}
+      {% for message in messages %}
+          <div class="alert alert-warning" role="alert">
+            {{ message }}
+          </div>
+      {% endfor %}
+    {% endif %}
+  </div>
   {% block content %}
   <!-- content -->
   {% endblock %}
