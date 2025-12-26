@@ -15,6 +15,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_URL = 'login'
 
 # Application definition
 
@@ -118,3 +119,15 @@ STATICFILES_DIRS = [
 # media files configuration
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}
+
+# SMTP configuration
+# EMAIL_HOST = 'gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'albertystang@gmail.com'
+# EMAIL_HOST_PASSWORD = '31602415aTys,./'
+# EMAIL_USE_TLS = True
